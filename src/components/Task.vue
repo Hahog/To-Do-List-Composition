@@ -1,16 +1,26 @@
 <script setup>
-   let str = defineProps(["str"])
-   str = str.str
-    console.log(str)
-  
+    import { ref } from 'vue'
+    let str = ref("");
+    let bol = ref(false);
+   let obj = defineProps({
+       "str": String,
+       "idTask": Number,
+       "delTask": Function,
+       "renameTask": Function
+   })
+   
+   //str = str.str
+   
 </script>
 
 <template>
     <section className="task">
-        <h1>{{ str }}</h1>
+        <h1 v-if="!bol">{{ obj.str }}</h1>
+        <input placeholder="Name" v-if="bol" v-model="str">
         <section className="but">
-            <button>Delete</button>
-            <button>Rename</button>
+            <button @click="obj.delTask(obj.idTask)">Delete</button>
+            <button v-if="!bol" @click="bol = !bol">Rename</button>
+            <button v-if="bol" @click=" bol = !bol, obj.renameTask(obj.idTask, str)">Edit</button>
         </section>
     </section>
 </template>
